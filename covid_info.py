@@ -13,6 +13,10 @@ class covid:
     class will have 8 different functions plaese list your function below.
     """
     # please add your function here
+    
+    def example(self):
+        """this is an example""" 
+
 
     def askUsers(self):
         """
@@ -38,4 +42,6 @@ class covid:
         """
         chandra
         This function will do data visualization using matplotlib
+        
+    
         """

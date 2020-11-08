@@ -14,7 +14,12 @@ class covid:
     """
     # please add your function here
 
-
+    def askUsers(self):
+        """
+        Diego
+        This function will ask users if they have any symptoms relating to covid.
+        All the data will be stored in a Person object that holds each indiviual person.
+        """
 
     def reg_data(self, filename):
         """
@@ -25,5 +30,6 @@ class covid:
     def graph(self, x, y):
         """
         chandra
-        This function will do data visualization using matplotlib
+        This function will do data visualization using matplotlibgit 
         """
+    

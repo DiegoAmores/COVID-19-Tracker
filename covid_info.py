@@ -16,9 +16,6 @@ class covid:
 
 
 
-
-
-
     def reg_data(self, filename):
         """
         chandra

@@ -20,6 +20,13 @@ class covid:
         This function will ask users if they have any symptoms relating to covid.
         All the data will be stored in a Person object that holds each indiviual person.
         """
+        
+    def readFileAndStore(self, filename):
+        """
+        Diego
+        This function will read in values from a file of patients.
+        Display the results and store them in individual Person objects in our dictionary.
+        """
 
     def reg_data(self, filename):
         """

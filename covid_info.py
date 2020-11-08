@@ -13,6 +13,10 @@ class covid:
     class will have 8 different functions plaese list your function below.
     """
     # please add your function here
+    
+    def example(self):
+        """this is an example""" 
+
 
     def askUsers(self):
         """
@@ -37,6 +41,12 @@ class covid:
     def graph(self, x, y):
         """
         chandra
+<<<<<<< HEAD
         This function will do data visualization using matplotlibgit 
+=======
+        This function will do data visualization using matplotlib
+        
+    
+>>>>>>> ea202a169c05b00ce31abbb13c4ac9632a51f40b
         """
     

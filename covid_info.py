@@ -41,12 +41,20 @@ class covid:
     def graph(self, x, y):
         """
         chandra
-<<<<<<< HEAD
-        This function will do data visualization using matplotlibgit 
-=======
         This function will do data visualization using matplotlib
         
     
->>>>>>> ea202a169c05b00ce31abbb13c4ac9632a51f40b
         """
-    
+    def CaseDensity(self):
+        """
+        Minsung 
+        This function will caculate covid density of each state and covid density of each state per day,month. 
+        total population of each state/ total cases of each each = Covid density
+        Covid density shows how dangerous each states actually are. 
+        """
+    def dailyMontly(self):
+        """
+        Minsung
+        This function will calculate the sum of cases each day, each month
+        Calculate how many more/less people got infected than previous day/month
+        """

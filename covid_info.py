@@ -14,7 +14,7 @@ class covid:
     """
     # please add your function here
     
-    def positivity_rate(self):
+    def positivity_rate(self, filename):
         """
         Kristen 
         This function will prompt the user to input a state, and will output the positivity rate for that 
@@ -55,4 +55,17 @@ class covid:
         This function will do data visualization using matplotlib
         
     
+        """
+    def CaseDensity(self):
+        """
+        Minsung 
+        This function will caculate covid density of each state and covid density of each state per day,month. 
+        total population of each state/ total cases of each each = Covid density
+        Covid density shows how dangerous each states actually are. 
+        """
+    def dailyMontly(self):
+        """
+        Minsung
+        This function will calculate the sum of cases each day, each month
+        Calculate how many more/less people got infected than previous day/month
         """

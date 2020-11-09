@@ -14,8 +14,19 @@ class covid:
     """
     # please add your function here
     
-    def example(self):
-        """this is an example""" 
+    def positivity_rate(self):
+        """
+        Kristen 
+        This function will prompt the user to input a state, and will output the positivity rate for that 
+        specific area. The data will be stored in a separate file and be read when prompted by the user
+        """ 
+    
+    def send_message(self):
+        """
+        Kristen
+        This method will send a message to the user if he/she has come into contact with and 
+        individual who has tested positive for COVID-19.
+        """
 
 
     def askUsers(self):

@@ -81,10 +81,28 @@ class covid:
         This function will caculate covid density of each state and covid density of each state per day,month. 
         total population of each state/ total cases of each each = Covid density
         Covid density shows how dangerous each states actually are. 
+        Parameters
+            self
+        Attributes
+            positive_state (int) - number of tested positive(each state)
+            population_state(int) - number of population (each state)
+            positive(int) - number of tested positive
+            covid_density(float) - population/positive cases. Lower covid density means more dangerous. 
+
+           
+
         """
     def dailyMontly(self):
         """
         Minsung
         This function will calculate the sum of cases each day, each month
         Calculate how many more/less people got infected than previous day/month
+        Parameters
+            self
+        Attributes
+            positive_state(int) - number of tested positive(each state)
+            population_state(int) - number of population (each state)
+            positive(int) - sum of number of tested positive
+            Positive_month(int) - number of tested positve(month)
+            positive_day(int) - number of tested positve(day)  
         """

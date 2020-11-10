@@ -18,7 +18,15 @@ class covid:
         """
         Kristen 
         This function will prompt the user to input a state, and will output the positivity rate for that 
-        specific area. The data will be stored in a separate file and be read when prompted by the user
+        specific area and a letter grade for that state. The data will be stored in a separate file and be read when prompted by the user
+        parameters: 
+            self
+            filename - path do a file
+        Attributes:
+            state(str) - The state that is being considered
+            positivity rate(int) - Percentage of the population that is positive
+            letter grade (str) - The letter grade (A-D) given based on the number of positive cases in the state
+
         """ 
     
     def send_message(self):
@@ -26,6 +34,8 @@ class covid:
         Kristen
         This method will send a message to the user if he/she has come into contact with and 
         individual who has tested positive for COVID-19.
+        parameters:
+            self
         """
 
 

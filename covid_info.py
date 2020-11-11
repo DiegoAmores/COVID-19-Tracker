@@ -77,12 +77,14 @@ class covid:
             name(str) - The name of the patient
             symptoms(list) - A list of symptoms
             covidTest(boolean) - A test to see if person has covid
+            state(str) - State that they got infected in
         """
         
     def readFileAndStore(self, filename):
         """
         Diego
         This function will read in values from a file of patients.
+        It will use regular expressions to sort information from file.
         Display the results and store them in individual Person objects in our dictionary.
         
         parameters:

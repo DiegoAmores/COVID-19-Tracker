@@ -62,6 +62,10 @@ class covid:
         individual who has tested positive for COVID-19.
         parameters:
             self
+        Attributes:
+            patients(dict) - list of individuals and whether or not he/she has covid-19
+            message(str) - an alert if the patient has come in contact with anyone who reported having the virus
+            
         """
 
     def askUsers(self):

@@ -15,7 +15,7 @@ Diego Amores
 import pandas as pd 
 import sys
 
-class Covid:
+class CovidTracker(Person):
     """
     Covid class have 8 different functions, and all of the functions have different purposes.
     positivity_rate()
@@ -47,6 +47,8 @@ class Covid:
     self
         filename - path to filename
     """
+    def __init__(self):
+        self.patients = []
    
     def positivity_rate(filename, state):
         """
@@ -86,21 +88,24 @@ class Covid:
             
         """
 
-    def askUsers(self):
+    def patientInfo(self, name, covid_test, gender, birthdate, location, symptoms, lisPatients):
         """
-        Diego
-        This function will ask users if they have any symptoms relating to covid.
-        All the data will be stored in a Person object that holds each indiviual person.
+        """
+        info = CovidTracker()
+        info.setName(name)
+        info.setCovidTest(covid_test)
+        info.setGender(gender)
+        info.setBirthDate(birthdate)
+        info.setLocation(location)
+        info.setSymptom(symptoms)
         
-        parameters:
-            self
-            Person - A person object
-        Attributes:
-            name(str) - The name of the patient
-            symptoms(list) - A list of symptoms
-            covidTest(boolean) - A test to see if person has covid
-            state(str) - State that they got infected in
-        """
+        self.patients.append(info)
+        
+        #Will be printing out a list of patients if user wants to
+        if lisPatients == 'Yes' or lisPatients == 'yes' or lisPatients == 'Y':
+            for patients in self.patients:
+                print(patients.getName())
+        #will implement a algorthimn for searching patients
         
     def readFileAndStore(self, filename):
         """
@@ -116,7 +121,36 @@ class Covid:
             patients(dict) - A dictionary to hold patient objects.
         """
 
+<<<<<<< HEAD
+    def reg_data(self, filename):
+        """
+        chandra
+        This function will find state and numbers of deaths, number of tested postives,
+        and number of tested negatives in the file and group it using regular expression,
+        then it will be use for visualization.
+        parameters:
+            self
+            filename(str) - path to file
+        attributes:
+            state(str) - state name
+            death(int) - number of death in state
+            positive(int) - number of tested positive
+            negative(int) - number of tested negative
+        """
+
+    def graph(self):
+        """
+        chandra
+        This function will visualize data using matplotlib. It will use values from reg_data() function.
+        parameters:
+            self
+            Display graph when function is called.
+        """
+
+    def CaseDensity(filename):
+=======
     def CaseDensity(self):
+>>>>>>> 7733e225df4277bdaeae7295606ac44b7d00259d
         """
         Minsung 
         This function will caculate covid density of each state and covid density of each state per day,month. 
@@ -125,26 +159,32 @@ class Covid:
         Parameters
             self
         Attributes
-            positive_state (int) - number of tested positive(each state)
-            population_state(int) - number of population (each state)
-            positive(int) - number of tested positive
-            covid_density(float) - population/positive cases. Lower covid density means more dangerous. 
+            Total_cases (int) - number of tested positive
+            population(int) - number of population (each state)
+            covidDensity(float) - population/positive cases. Lower covid density means more dangerous. 
         """
+        df = pd.read_csv("covid_data.csv", sep = ",")
+        df["caseDensity"] = df["population"]/df["Total_case"]*100
+        return print(df[["state", "Total_cases", "caseDensity"]].sort_values(by=['Total_cases'], ascending=False).head())
+        
 
-    def dailyMonthly(self):
+    def highest_density(filename,state):
         """
         Minsung
-        This function will calculate the sum of cases each day, each month
-        Calculate how many more/less people got infected than previous day/month
+        This function will shot the hightes case density state
         Parameters
-            self
+            filename
         Attributes
-            positive_state(int) - number of tested positive(each state)
-            population_state(int) - number of population (each state)
-            positive(int) - sum of number of tested positive
-            Positive_month(int) - number of tested positve(month)
-            positive_day(int) - number of tested positve(day)  
+            covidDensity(float) - population/positive cases. Lower covid density means more dangerous. 
+            State
         """
+<<<<<<< HEAD
+        df = pd.read_csv("covid_data.csv", sep = ",")
+        filt = df[df["state"] == state]
+        maxx = filt["case_density"].max()
+        state_filt = filt[filt["caseDensity"] == maxx]["state"].iloc[0]
+        return maxx, state_filt 
+=======
 
 def reg_data(filename):
 
@@ -198,7 +238,34 @@ def parse_args(arglist):
     return parser.parse_args(arglist)
     
 
+def main():
+    
+    while True:
+        
+        name = input("Enter Full Name: ")
+        print("Lab Test: COVID-19")
+        covid_test = input("Result: ")
+        gender = input("Enter Gender: ")
+        birthdate = input("Enter Birth Date: ")
+        location = input("Enter Last Known Location of Infection: ")
+        symptoms = input("Enter Symptoms After Infection: ")
+        lisPatients = input("List all patients: ")
+        startOver = input("Would You Like To Include Another Patient: ")
+        
+        c = CovidTracker()
+        c.patientInfo(name, covid_test, gender, birthdate, location, symptoms, lisPatients)
+        
+        if startOver == 'no' or startOver == 'No' or startOver == 'N':
+            break
+        else:
+            continue
+            
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     reg_data(args.filename)
+<<<<<<< HEAD
     value = positivity_rate(path=args.path, state=args.state)
+=======
+    main()
+>>>>>>> 7733e225df4277bdaeae7295606ac44b7d00259d
+>>>>>>> 8174d5101c7caaf43d3ddf416fadcfc5d444e1de

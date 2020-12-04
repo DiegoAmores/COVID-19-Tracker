@@ -48,7 +48,7 @@ class Covid:
         filename - path to filename
     """
    
-    def positivity_rate(path, state):
+    def positivity_rate(filename, state):
         """
         Kristen 
         Data found from: https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-02-2020.csv
@@ -70,20 +70,7 @@ class Covid:
         incidence = max(df2["Incident_rate"])
         top_five = incidence.head(n=5)
         print(top_five)
-    
-    def parse_args(arglist):
-        """This function will add two arguments - a path and a state and will pass the commandline arguments
-        and will return the namespace
         
-        """
-        parser = ArgumentParser()
-        parser.add_argument("path", type = str)
-        parser.add_argument("state", type = str)
-        return parser.parse_args(arglist)
-
-    if__name__ == "__main__":
-        args = parse_args(sys.argv[1:])
-        value = positivity_rate(path=args.path, state=args.state)
 
     def testing_locations(filename, zip, location:
         """
@@ -209,7 +196,9 @@ def parse_args(arglist):
     parser.add_argument("filename",
                     help="file containing states, deaths, positives")
     return parser.parse_args(arglist)
+    
 
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     reg_data(args.filename)
+    value = positivity_rate(path=args.path, state=args.state)

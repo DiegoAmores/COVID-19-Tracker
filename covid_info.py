@@ -132,35 +132,44 @@ class CovidTracker(Person):
             patients(dict) - A dictionary to hold patient objects.
         """
 
-    def CaseDensity(self):
+    def CaseDensity(filename, state):
         """
         Minsung 
         This function will caculate covid density of each state and covid density of each state per day,month. 
-        total population of each state/ total cases of each each = Covid density
-        Covid density shows how dangerous each states actually are. 
         Parameters
             self
         Attributes
-            positive_state (int) - number of tested positive(each state)
-            population_state(int) - number of population (each state)
             positive(int) - number of tested positive
             covid_density(float) - population/positive cases. Lower covid density means more dangerous. 
+            Total_cases (int) - number of tested positive
+            population(int) - number of population (each state)
+            covidDensity(float) - population/positive cases. Lower covid density means more dangerous. 
         """
+        df = pd.read_csv("covid_data.csv", sep = ",")
+        df["caseDensity"] = df["population"]/df["Total_case"]*100
+        return print(df[["state", "Total_cases", "caseDensity"]].sort_values(by=['Total_cases'], ascending=False).head())
 
-    def dailyMonthly(self):
+
+    def highest_density(filename,state):
         """
         Minsung
-        This function will calculate the sum of cases each day, each month
-        Calculate how many more/less people got infected than previous day/month
+        This function will show the highest case density state
         Parameters
-            self
+            state
+            filename
         Attributes
-            positive_state(int) - number of tested positive(each state)
-            population_state(int) - number of population (each state)
+            state(str) - name of state
             positive(int) - sum of number of tested positive
             Positive_month(int) - number of tested positve(month)
             positive_day(int) - number of tested positve(day)  
+            covidDensity(float) - population/positive cases. Lower covid density means more dangerous. 
+            State
         """
+        df = pd.read_csv("covid_data.csv", sep = ",")
+        filt = df[df["state"] == state]
+        maxx = filt["case_density"].max()
+        state_filt = filt[filt["caseDensity"] == maxx]["state"].iloc[0]
+        return maxx, state_filt 
 
 def reg_data(filename):
 
@@ -243,3 +252,5 @@ if __name__ == "__main__":
     main()
     positivity_rate(path=args.path, state=args.state)
     
+     def CaseDensity(filename):
+

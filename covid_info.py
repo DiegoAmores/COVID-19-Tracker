@@ -14,7 +14,7 @@ Diego Amores
 """
 import pandas as pd 
 
-class Covid:
+class CovidTracker(Person):
     """
     Covid class have 8 different functions, and all of the functions have different purposes.
     positivity_rate()
@@ -46,6 +46,8 @@ class Covid:
     self
         filename - path to filename
     """
+    def __init__(self):
+        self.patients = []
    
     def positivity_rate(path, state):
         """
@@ -98,21 +100,24 @@ class Covid:
             
         """
 
-    def askUsers(self):
+    def patientInfo(self, name, covid_test, gender, birthdate, location, symptoms, lisPatients):
         """
-        Diego
-        This function will ask users if they have any symptoms relating to covid.
-        All the data will be stored in a Person object that holds each indiviual person.
+        """
+        info = CovidTracker()
+        info.setName(name)
+        info.setCovidTest(covid_test)
+        info.setGender(gender)
+        info.setBirthDate(birthdate)
+        info.setLocation(location)
+        info.setSymptom(symptoms)
         
-        parameters:
-            self
-            Person - A person object
-        Attributes:
-            name(str) - The name of the patient
-            symptoms(list) - A list of symptoms
-            covidTest(boolean) - A test to see if person has covid
-            state(str) - State that they got infected in
-        """
+        self.patients.append(info)
+        
+        #Will be printing out a list of patients if user wants to
+        if lisPatients == 'Yes' or lisPatients == 'yes' or lisPatients == 'Y':
+            for patients in self.patients:
+                print(patients.getName())
+        #will implement a algorthimn for searching patients
         
     def readFileAndStore(self, filename):
         """
@@ -209,6 +214,29 @@ def parse_args(arglist):
                     help="file containing states, deaths, positives")
     return parser.parse_args(arglist)
 
+def main():
+    
+    while True:
+        
+        name = input("Enter Full Name: ")
+        print("Lab Test: COVID-19")
+        covid_test = input("Result: ")
+        gender = input("Enter Gender: ")
+        birthdate = input("Enter Birth Date: ")
+        location = input("Enter Last Known Location of Infection: ")
+        symptoms = input("Enter Symptoms After Infection: ")
+        lisPatients = input("List all patients: ")
+        startOver = input("Would You Like To Include Another Patient: ")
+        
+        c = CovidTracker()
+        c.patientInfo(name, covid_test, gender, birthdate, location, symptoms, lisPatients)
+        
+        if startOver == 'no' or startOver == 'No' or startOver == 'N':
+            break
+        else:
+            continue
+            
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     reg_data(args.filename)
+    main()

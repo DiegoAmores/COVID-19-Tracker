@@ -1,3 +1,4 @@
+from Person import Person
 from argparse import ArgumentParser
 import re
 import sys
@@ -251,4 +252,4 @@ if __name__ == "__main__":
     reg_data(args.filename)
     main()
     positivity_rate(path=args.path, state=args.state)
-
+    

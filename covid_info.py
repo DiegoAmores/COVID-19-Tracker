@@ -72,7 +72,7 @@ class CovidTracker(Person):
         top_five = incidence.head(n=5)
         print(top_five)
 
-    def testing_locations(filename, zip, location:
+    def testing_locations(filename, zip, location):
         """
         Kristen
         This function will prompt a user to input their zip code(in Maryland), and will output 
@@ -85,7 +85,7 @@ class CovidTracker(Person):
             testing_location (str) - Nearest testing site to the user 
             
         """
-
+        
     def patientInfo(self, name, covid_test, gender, birthdate, location, symptoms, lisPatients):
         """
         Diego

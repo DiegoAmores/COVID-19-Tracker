@@ -9,6 +9,7 @@ Minsung Kim
 Diego Amores
 """
 import pandas as pd 
+import sys
 
 class Covid:
     """
@@ -69,11 +70,11 @@ class Covid:
         
         """
         parser = ArgumentParser()
-        parser.add_argument("path")
-        parser.add_argument("state")
+        parser.add_argument("path", type = str)
+        parser.add_argument("state", type = str)
         return parser.parse_args(arglist)
 
-    if__name__ == "__main__:
+    if__name__ == "__main__":
         args = parse_args(sys.argv[1:])
         value = positivity_rate(path=args.path, state=args.state)
 

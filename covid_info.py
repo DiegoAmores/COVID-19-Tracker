@@ -12,7 +12,9 @@ Kristen Wagner
 Minsung Kim
 Diego Amores
 """
-class covid:
+import pandas as pd 
+
+class Covid:
     """
     Covid class have 8 different functions, and all of the functions have different purposes.
     positivity_rate()
@@ -44,34 +46,55 @@ class covid:
     self
         filename - path to filename
     """
-    # please add your functions here
-    def positivity_rate(self, filename):
+   
+    def positivity_rate(path, state):
         """
         Kristen 
-        This function will prompt the user to input a state, and will output the positivity rate for that 
-        specific area and a letter grade for that state. The data will be stored in a separate file,
-        and be read when prompted by the user
-        parameters: 
-            self
-            filename - path do a file
-        Attributes:
+        Data found from: https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-02-2020.csv
+        This function will prompt the user for a state and will read a csv file, then output 
+        the total number of covid cases in that state thus far, the current active cases, and the 
+        incident rate, which is the number of new cases per day divided by a population of 1,000 people. 
+        
+        Parameters: 
+            path(str)- path to a file
             state(str) - The state that is being considered
-            positivity rate(int) - Percentage of the population that is positive
-            letter grade (str) - The letter grade (A-D) given based on the number of positive cases
-            in the state
+            total_cases (int) - Number of cases reported so far for this state
+            active_cases (int) - Number of active reported covid cases
+            incident rate (int) - Number of cases per day per 1,000 people
+            
+        """    
+        df = pd.read_csv("covid_data.csv")
+        cols = ["Province_State", "total_cases", "Active", "Incident_rate"]
+        df2 = df[cols]
+        incidence = max(df2["Incident_rate"])
+        top_five = incidence.head(n=5)
+        print(top_five)
+    
+    def parse_args(arglist):
+        """This function will add two arguments - a path and a state and will pass the commandline arguments
+        and will return the namespace
+        
+        """
+        parser = ArgumentParser()
+        parser.add_argument("path")
+        parser.add_argument("state")
+        return parser.parse_args(arglist)
 
-        """ 
+    if__name__ == "__main__:
+        args = parse_args(sys.argv[1:])
+        value = positivity_rate(path=args.path, state=args.state)
 
-    def send_message(self):
+    def testing_locations(filename, zip, location:
         """
         Kristen
-        This method will send a message to the user if he/she has come into contact with and 
-        individual who has tested positive for COVID-19.
+        This function will prompt a user to input their zip code(in Maryland), and will output 
+        testing locations that are closest to them and the address of the testing site.
         parameters:
-            self
-        Attributes:
-            patients(dict) - list of individuals and whether or not he/she has covid-19
-            message(str) - an alert if the patient has come in contact with anyone who reported having the virus
+        
+        Parameters: 
+            filename (str)- The file that will have the zip codes and 
+            zip (string) - the zip code of the user 
+            testing_location (str) - Nearest testing site to the user 
             
         """
 

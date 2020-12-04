@@ -1,3 +1,7 @@
+from argparse import ArgumentParser
+import re
+import sys
+
 """
 INST 326 FINAL PROJECT
 Group - 107
@@ -39,6 +43,9 @@ class Covid:
     dailyMonthly()
         This function will calculate the sum of cases each day, and each month
         Calculate how many more/less people got infected than previous day/month
+    attributes:
+    self
+        filename - path to filename
     """
    
     def positivity_rate(path, state):
@@ -122,31 +129,6 @@ class Covid:
             patients(dict) - A dictionary to hold patient objects.
         """
 
-    def reg_data(self, filename):
-        """
-        chandra
-        This function will find state and numbers of deaths, number of tested postives,
-        and number of tested negatives in the file and group it using regular expression,
-        then it will be use for visualization.
-        parameters:
-            self
-            filename(str) - path to file
-        attributes:
-            state(str) - state name
-            death(int) - number of death in state
-            positive(int) - number of tested positive
-            negative(int) - number of tested negative
-        """
-
-    def graph(self):
-        """
-        chandra
-        This function will visualize data using matplotlib. It will use values from reg_data() function.
-        parameters:
-            self
-            Display graph when function is called.
-        """
-
     def CaseDensity(self):
         """
         Minsung 
@@ -176,3 +158,58 @@ class Covid:
             Positive_month(int) - number of tested positve(month)
             positive_day(int) - number of tested positve(day)  
         """
+
+def reg_data(filename):
+
+    """
+    chandra
+    This function will find state and numbers of deaths, number of tested postives,
+    and number of tested negatives in the file using regular expression, and added to the list
+    it will be use for visualization.
+    parameters:
+        self
+        filename(str) - path to file
+    attributes:
+        state(str) - state name
+        death(int) - number of death in state
+        positive(int) - number of tested positive
+        negative(int) - number of tested negative
+    """
+    with open(filename, "r", encoding='utf-8') as f:
+        new_list = []
+        for line in f:
+            # state = r"(\w.+\.)(\s\d+\,?\d+)(\s\d+\,?\d+\,?\d+)"
+            state = re.search(r"(\w.+\.)", line)
+            num_death = re.search(r"(\s\d+\,?\d+)", line)
+            num_positive = re.search(r"(\s\s\d+\,?\d+)", line)
+
+            if state:
+                states = state[1]
+                new_list.append(states)
+            if num_death:
+                death = num_death[1]
+                new_list.append(death)
+            if num_positive:
+                positive = num_positive[1]
+                new_list.append(positive)
+    print(new_list)
+
+def graph(self):
+    """
+    chandra
+    This function will visualize data using matplotlib. It will use values from reg_data() function.
+    parameters:
+    self
+    Display graph when function is called.
+    """
+
+def parse_args(arglist):
+    """ Parse command-line arguments. """
+    parser = ArgumentParser()
+    parser.add_argument("filename",
+                    help="file containing states, deaths, positives")
+    return parser.parse_args(arglist)
+
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    reg_data(args.filename)

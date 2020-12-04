@@ -251,6 +251,4 @@ if __name__ == "__main__":
     reg_data(args.filename)
     main()
     positivity_rate(path=args.path, state=args.state)
-    
-     def CaseDensity(filename):
 

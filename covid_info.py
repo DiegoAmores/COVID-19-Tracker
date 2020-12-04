@@ -13,7 +13,6 @@ Minsung Kim
 Diego Amores
 """
 import pandas as pd 
-import sys
 
 class CovidTracker(Person):
     """
@@ -50,7 +49,7 @@ class CovidTracker(Person):
     def __init__(self):
         self.patients = []
    
-    def positivity_rate(filename, state):
+    def positivity_rate(path, state):
         """
         Kristen 
         Data found from: https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_daily_reports_us/12-02-2020.csv
@@ -72,7 +71,20 @@ class CovidTracker(Person):
         incidence = max(df2["Incident_rate"])
         top_five = incidence.head(n=5)
         print(top_five)
+    
+    def parse_args(arglist):
+        """This function will add two arguments - a path and a state and will pass the commandline arguments
+        and will return the namespace
         
+        """
+        parser = ArgumentParser()
+        parser.add_argument("path")
+        parser.add_argument("state")
+        return parser.parse_args(arglist)
+
+    if__name__ == "__main__:
+        args = parse_args(sys.argv[1:])
+        value = positivity_rate(path=args.path, state=args.state)
 
     def testing_locations(filename, zip, location:
         """
@@ -90,6 +102,18 @@ class CovidTracker(Person):
 
     def patientInfo(self, name, covid_test, gender, birthdate, location, symptoms, lisPatients):
         """
+        Diego
+        This function will prompt patients for information such as full name, covid results, gender,
+        birthdate, location, and symptoms. It will also prompt the users to enter data for other patients 
+        and whether or not to display a list of patients.
+        
+        Parameters:
+            name (str) - The full name of a patient
+            covid_result - Result of covid test
+            gender - The gender of patient
+            birthdate - The birthdate of a patient
+            location - The last know location before coming into contact with COVID
+            symptoms - Symptoms that patients experienced
         """
         info = CovidTracker()
         info.setName(name)
@@ -110,9 +134,10 @@ class CovidTracker(Person):
     def readFileAndStore(self, filename):
         """
         Diego
-        This function will read in values from a file of patients.
+        This function will read in values from a  csv file of patients.
         It will use regular expressions to sort information from file.
-        Display the results and store them in individual Person objects in our dictionary.
+        We will also be inserting new patient information into the csv file.
+        We will be displaying the results and store them into another csv file.
         
         parameters:
             self
@@ -121,36 +146,7 @@ class CovidTracker(Person):
             patients(dict) - A dictionary to hold patient objects.
         """
 
-<<<<<<< HEAD
-    def reg_data(self, filename):
-        """
-        chandra
-        This function will find state and numbers of deaths, number of tested postives,
-        and number of tested negatives in the file and group it using regular expression,
-        then it will be use for visualization.
-        parameters:
-            self
-            filename(str) - path to file
-        attributes:
-            state(str) - state name
-            death(int) - number of death in state
-            positive(int) - number of tested positive
-            negative(int) - number of tested negative
-        """
-
-    def graph(self):
-        """
-        chandra
-        This function will visualize data using matplotlib. It will use values from reg_data() function.
-        parameters:
-            self
-            Display graph when function is called.
-        """
-
-    def CaseDensity(filename):
-=======
     def CaseDensity(self):
->>>>>>> 7733e225df4277bdaeae7295606ac44b7d00259d
         """
         Minsung 
         This function will caculate covid density of each state and covid density of each state per day,month. 
@@ -159,32 +155,26 @@ class CovidTracker(Person):
         Parameters
             self
         Attributes
-            Total_cases (int) - number of tested positive
-            population(int) - number of population (each state)
-            covidDensity(float) - population/positive cases. Lower covid density means more dangerous. 
+            positive_state (int) - number of tested positive(each state)
+            population_state(int) - number of population (each state)
+            positive(int) - number of tested positive
+            covid_density(float) - population/positive cases. Lower covid density means more dangerous. 
         """
-        df = pd.read_csv("covid_data.csv", sep = ",")
-        df["caseDensity"] = df["population"]/df["Total_case"]*100
-        return print(df[["state", "Total_cases", "caseDensity"]].sort_values(by=['Total_cases'], ascending=False).head())
-        
 
-    def highest_density(filename,state):
+    def dailyMonthly(self):
         """
         Minsung
-        This function will shot the hightes case density state
+        This function will calculate the sum of cases each day, each month
+        Calculate how many more/less people got infected than previous day/month
         Parameters
-            filename
+            self
         Attributes
-            covidDensity(float) - population/positive cases. Lower covid density means more dangerous. 
-            State
+            positive_state(int) - number of tested positive(each state)
+            population_state(int) - number of population (each state)
+            positive(int) - sum of number of tested positive
+            Positive_month(int) - number of tested positve(month)
+            positive_day(int) - number of tested positve(day)  
         """
-<<<<<<< HEAD
-        df = pd.read_csv("covid_data.csv", sep = ",")
-        filt = df[df["state"] == state]
-        maxx = filt["case_density"].max()
-        state_filt = filt[filt["caseDensity"] == maxx]["state"].iloc[0]
-        return maxx, state_filt 
-=======
 
 def reg_data(filename):
 
@@ -236,7 +226,6 @@ def parse_args(arglist):
     parser.add_argument("filename",
                     help="file containing states, deaths, positives")
     return parser.parse_args(arglist)
-    
 
 def main():
     
@@ -263,9 +252,4 @@ def main():
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
     reg_data(args.filename)
-<<<<<<< HEAD
-    value = positivity_rate(path=args.path, state=args.state)
-=======
     main()
->>>>>>> 7733e225df4277bdaeae7295606ac44b7d00259d
->>>>>>> 8174d5101c7caaf43d3ddf416fadcfc5d444e1de

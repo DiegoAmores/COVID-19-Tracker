@@ -37,6 +37,8 @@ def test_edge_cases_death_rate(capsys):
          8.67638765810038, 7.972264713995536, 7.4040479004608635, 
           7.297744491857529, 6.666666666666667, 6.521739130434782, 
            6.428817649086521, 5.67258054945707]
+    with mock.patch("builtins.input", side_effect = ["2010-11-11"]):
+        assert covid_report.latest_highest_deaths_rates() == []
     
 def test_recent_most_case_area(capsys):
     with mock.patch("builtins.input", side_effect=["2020-12-15"]):
@@ -61,6 +63,11 @@ def test_recent_most_case_area(capsys):
            105774, 104031, 97417, 95289, 94729, 92476, 91745, 86668, 74823, 70280, 58112, 57180,
             54012, 49809, 47696, 47428, 39329, 30474, 29849, 25240, 24270, 11837, 9293, 5303,
              4162, 3127, 535, 25]
+def test_edge_most_recent_case_area(capsys):
+    with mock.patch("builtins.input", side_effect =["2020-12-17"]):
+        assert covid_report.recent_most_case_area() == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 def test_reg_data():
     state_death = covid_report.reg_data()

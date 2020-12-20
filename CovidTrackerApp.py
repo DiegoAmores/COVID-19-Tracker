@@ -397,7 +397,7 @@ class CovidTrackerApp():
         
         return start_over
     
-     def latest_highest_deaths_rates(self):
+    def latest_highest_deaths_rates(self):
         """
         Reads a csv file into a dataframe and groups it by states. 
         Then finds the total deaths the total cases for each state 

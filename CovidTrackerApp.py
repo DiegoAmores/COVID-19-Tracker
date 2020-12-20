@@ -310,3 +310,89 @@ class CovidTrackerApp():
             report_date = sorted_report[self.report_counter].get_date()
     
         return report_date
+    
+    def find_state(self):
+        """ 
+        This function will take an input from the user to search for a particular 
+        state. The function will iterate through the most recent csv file or the 
+        inputted report to find the most recent data for that state
+            
+        Attributes:
+            valid_input_flag (int): Validates whether user input valid input
+            state (str): The state the user wants to find latest information for.
+            latest_report (str): The date of the latest COVID report.
+            
+            start_over (str): Whether or not the user wants to search for 
+                              latest information for another state.
+            
+        Side Effects:
+            Depends on self.info with having more than 1 COVID case.
+         
+        Returns: 
+            The most recent number of deaths and cases for the inputted state
+        """
+        valid_input_flag = 0
+        
+        while True:
+            while True:
+                try:
+                    state = input("Enter State to Find Lastest Information For: ")
+                    for key in self.state_fips_dict:
+                        if key == state:
+                            valid_input_flag = 1
+                        
+                    if valid_input_flag == 1:
+                        break
+                    else:
+                        raise ValueError() 
+                      
+                except ValueError:
+                    click.clear()
+                    print("Invalid input! Please try again...")
+                    
+            latest_report = self.get_latest_report()
+            
+            for i in sorted(self.info, key=lambda x: (x.get_date(), x.get_state()),
+                            reverse=True):
+                if i.get_date() == latest_report:
+                    if i.get_state() == state:
+                        click.clear()
+                        fips = self.state_fips_dict.get(state)
+                        
+                        print("Latest Information For: " + state + "\n")
+                        print("Lastest Report As of: " + i.get_date())
+                        print("State: " + i.get_state())        
+                        print("State FIPS Code: " + str(fips))
+                        print("Total Covid Cases: " + str(i.get_cases()))
+                        print("Total Covid Deaths: " + str(i.get_deaths()))
+                        break
+                        
+                else:
+                    click.clear()
+                    print("\nNo Latest Information Provided...")
+                    break
+                
+            while True:
+                    try:
+                        start_over = input("\nWould You Like To Search Another State(Y/N): ")
+                        if start_over == 'N':
+                            break
+                        elif start_over == 'Y':
+                            click.clear()
+                            break
+                        else:
+                            raise ValueError()
+                    
+                    except ValueError:
+                        click.clear()
+                        print("Input Invalid. Please try again...")
+        
+            if start_over == 'N':
+                start_over = False
+                click.clear()
+                break
+            else:
+                valid_input_flag = 0
+                continue
+        
+        return start_over

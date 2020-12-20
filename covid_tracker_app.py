@@ -10,6 +10,11 @@ import re
 from covid_information import CovidInfo
 from datetime import date, datetime, timedelta
 
+#FOR MAC USERS ONLY
+#import ssl 
+#ssl._create_default_https_context = ssl._create_unverified_context
+
+
 """
 INST 326 Object Oriented Programming Final Project
 Group - 107

@@ -497,3 +497,62 @@ class CovidTrackerApp():
         click.pause()
         click.clear()
     
+    def reg_data(self):
+        """ 
+        This function will find name of the states and number of deaths using
+        regular expression, then append the data into two list called 
+        states and death
+        
+        Attributes:
+            fh (IO): Opens file to read.
+            filename (list): Stores lines in file as a list.
+            state (list): The name of states.
+            deaths (list): The number of deaths.
+            
+        Returns:
+            tuple - states and deaths
+        """
+        fh = open('new_data.txt', 'r')
+        filename = fh.readlines()
+
+        states = []
+        deaths = []
+
+        for line in filename:
+            matches = re.search(r"(\w.+)(\s\d+)", line)
+            states.append(matches.group(1))
+            deaths.append(matches.group(2).strip())
+            
+        return states, deaths
+
+    def graph(self):
+        """ 
+        This function call reg_data() function and retrieve data - list of states
+        name and number of deaths. It convert two list into dictinary, then sort
+        the values from highest to lowest. The sorted list of values is used to 
+        get key from dictionary, then graph and display ten states with 
+        highest number of deaths.
+        
+        Attributes:
+            x (tuple): tuples of states and deaths.
+            data (dict): convert tuples into dictionary.
+            sort_data (list): sorts data by value
+            x_value (list): adds all states into list.
+            y_value (list): adds numbers of death to list.
+        """
+        x = self.reg_data()
+        data = dict(zip(x[0], x[1]))
+        
+        for key in data:
+            data[key] =  int(data[key])
+           
+        sort_data = sorted(data, reverse=True, key=data.get)
+        x_values = [x for x in sort_data]
+        y_values = [data[y] for y in sort_data]
+        
+        plt.figure(figsize=(15,8))
+        plt.bar(x_values[:10], y_values[:10])
+        plt.title("States With Highest Number Of Deaths")
+        plt.xlabel("Name Of The States")
+        plt.ylabel("Number Of Deaths")
+        plt.show()

@@ -203,3 +203,54 @@ class CovidTrackerApp():
                 continue
 
         return start_over
+    
+    def read_file(self):
+        """ 
+        Extracts data from data.humdata.org API and stores information 
+        into a set of objects. 
+            
+        Attributes:
+            patient_data (DataFrame): Information for COVID reports
+            date (str): COVID report date.
+            state (str): COVID report state.
+            fips (str): COVID report state FIP code.
+            cases (int): COVID report for number of COVID cases.
+            deaths (int): COVID report for number of COVID deaths.
+            info_obj (object): CovidInformation object.
+            
+        Side Effects:
+            Modifies self.info
+            
+        Returns:
+            False: Boolean expression to break while loop
+        """
+        while True:
+            
+            #Reads data from CSV and stores it has a data frame.        
+            patient_data = pd.read_csv(
+                "https://data.humdata.org/hxlproxy/api/data-preview.csv?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnytimes%2Fcovid-19-data%2Fmaster%2Fus-states.csv&filename=us-states.csv",
+                usecols = ["date", "state", "fips", "cases", "deaths"])
+            
+            with click.progressbar(range(len(patient_data)), 
+                                   label = "Importing Data:") as bar:
+                
+                #Iterate through CSV and extract date, state, fips code, cases, and deaths.
+                for i in bar:
+                    date = patient_data.values[i][0]
+                    state = patient_data.values[i][1]
+                    fips = patient_data.values[i][2]
+                    cases = patient_data.values[i][3]
+                    deaths = patient_data.values[i][4]
+                    
+                    #Checks to see if there's no duplicates already in the set of objects.
+                    if CovidInfo(date, state, fips, cases, deaths) not in self.info:
+                        
+                        #Create object for COVID report and add it to the set.
+                        info_obj = CovidInfo(date, state, fips, cases, deaths)
+                        self.info.add(info_obj)
+                        
+                print("Importing Complete!")
+                click.pause()
+                click.clear()
+            
+            return False

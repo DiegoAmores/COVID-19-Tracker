@@ -35,6 +35,8 @@ def test_edge_cases_death_rate(capsys):
          8.67638765810038, 7.972264713995536, 7.4040479004608635, 
           7.297744491857529, 6.666666666666667, 6.521739130434782, 
            6.428817649086521, 5.67258054945707]
+    with mock.patch("builtins.input", side_effect = ["2010-11-11"]):
+        assert covid_report.latest_highest_deaths_rates() == []
     
 
 def test_recent_most_case_area(capsys):

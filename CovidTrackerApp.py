@@ -91,3 +91,115 @@ class CovidTrackerApp():
             "Texas": 48, "Utah": 49, "Vermont": 50, "Virginia": 51, "Washington": 53,
             "West Virginia": 54, "Wisconsin": 55, "Wyoming": 56,
         }
+    
+    def get_report(self):
+        """
+        Prompts users to enter a new COVID report for any state for today's date
+        with new COVID cases and new COVID deaths information.
+        
+        Attributes:
+            valid_input_flag (int): Flag for input valdidation.
+            today (str): Today's date.
+            state (str): User's input state.
+            fips (str): state's FIPS code.
+            cases (int): Number of COVID cases.
+            deaths (int): Number of COVID deaths.
+            start_over (str): Flag for adding or ending COVID report.
+            info_obj (object): CovidInformation object
+            
+        Side Effects:
+            Asks users for input.
+            Changes date to current date.
+            Writes to stdout.
+            Modifies self.info.
+            Modifies self.report_add.
+            Modifies self.report_counter.
+        
+        Exception Handling:
+            ValueError: handles invalid input.
+        
+        Returns:
+            start_over (bool): 
+            
+        Few Exception Bugs to fix.
+        """
+        valid_input_flag = 0
+        while True:
+            
+            today = date.today().strftime("%Y-%m-%d")
+            print("Date: " + today)
+
+            while True:
+                try:
+                    state = input("Enter State(ex. Maryland): ")
+                    
+                    for key in self.state_fips_dict:
+                        if key == state:
+                            valid_input_flag = 1
+                        
+                    if valid_input_flag == 1:
+                        break
+                    else:
+                        raise ValueError() 
+                      
+                except ValueError:
+                    click.clear()
+                    print("Invalid input! Please try again...")
+                            
+            fips = self.state_fips_dict.get(state)          
+            print("State FIPS Code: " + str(fips))
+            
+            while True:
+                try:
+                    cases = int(input("Enter cases reported: "))
+                    if cases < 0:
+                        raise ValueError()
+                    
+                    while True:
+                        try:
+                            deaths = int(input("Enter deaths reported: "))
+                            if deaths < 0:
+                                raise ValueError()
+                            break
+                        
+                        except ValueError:
+                            click.clear()
+                            print("Input only positive integers! Please try again...")
+                    break
+                
+                except ValueError:
+                    click.clear()
+                    print("Input only positive integers! Please try again...")
+                      
+            while True:
+                try:
+                    start_over = input("Would You Like To Add Another Report(Y/N): ")
+                    if start_over == 'N':
+                        break
+                    elif start_over == 'Y':
+                        click.clear()
+                        break
+                    else:
+                        raise ValueError()
+                    
+                except ValueError:
+                    click.clear()
+                    print("Input Invalid. Please try again...")
+            
+            if CovidInfo(today, state, fips, cases, deaths) not in self.info:
+                info_obj = CovidInfo(today, state, fips, cases, deaths)
+                self.info.add(info_obj)
+                
+                self.report_counter = self.report_counter - 1
+                
+            self.report_add = True
+            
+            if start_over == 'N':
+                start_over = False
+                click.clear()
+                break
+            else:
+                valid_input_flag = 0
+                continue
+
+        return start_over

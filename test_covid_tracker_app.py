@@ -1,9 +1,16 @@
 from covid_tracker_app import CovidTrackerApp
 import pandas as pd 
 import builtins
+from datetime import date
 from unittest import mock
 
 covid_report = CovidTrackerApp()
+
+
+def test_happy_cases_get_report(capsys):
+    with mock.patch("builtins.input",
+                   side_effect = ["Maryland", "6", "7", "N"]):
+        assert covid_report.get_report().get_date() == str(date.today())
 
 def test_happy_cases_death_rate(capsys):
     with mock.patch("builtins.input",
@@ -62,7 +69,7 @@ def test_recent_most_case_area(capsys):
           195064, 193490, 162032, 149968, 144355, 142578, 135721, 133271, 125989, 121643, 115264,
            105774, 104031, 97417, 95289, 94729, 92476, 91745, 86668, 74823, 70280, 58112, 57180,
             54012, 49809, 47696, 47428, 39329, 30474, 29849, 25240, 24270, 11837, 9293, 5303,
-             4162, 3127, 535, 25]
+             4162, 3127, 535, 25] 
 def test_edge_most_recent_case_area(capsys):
     with mock.patch("builtins.input", side_effect =["2020-12-17"]):
         assert covid_report.recent_most_case_area() == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 

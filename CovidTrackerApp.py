@@ -254,3 +254,35 @@ class CovidTrackerApp():
                 click.clear()
             
             return False
+        
+    def write_file(self):
+        """
+        Writes from set of COVID report objects to a CSV file.
+            
+        Attributes:
+            filename (str): Filename that is created in current directory.
+            writer (writer object): Writer object to write to CSV file.
+            
+        Returns:
+            False: boolean expression to break while loop.  
+        """
+        while True:   
+            with click.progressbar(self.info, label = "Downloading File:", 
+                                   length = len(self.info)) as bar:
+                filename = "Updated_Report.csv"
+                
+                #Creates new CSV file with columns named "Date, State, Fips, Cases, Deaths"
+                with open(filename, 'w') as csv_file:
+                    writer = csv.writer(csv_file, delimiter = ',', lineterminator = '\n')
+                    writer.writerow(["Date", "State", "Fips", "Cases", "Deaths"])
+                    
+                    #Writes to CSV in descending order by date and state
+                    for i in sorted(bar, key=lambda x: (x.get_date(), x.get_state()), reverse=True):
+                        writer.writerow([i.get_date(), i.get_state(), i.get_fips(), 
+                                        i.get_cases(), i.get_deaths()])
+                        
+                print("Download Complete!")
+                click.pause()
+                click.clear()
+                
+            return False

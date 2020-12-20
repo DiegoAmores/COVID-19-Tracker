@@ -207,7 +207,7 @@ class CovidTrackerApp():
                 valid_input_flag = 0
                 continue
 
-        return start_over
+        return info_obj
     
     def read_file(self):
         """ 
@@ -610,7 +610,7 @@ def main():
 
         if option == "1":
             while True:
-                if CovidTrackerApp().get_report() == False:
+                if CovidTrackerApp().get_report().get_date() == str(date.today()):
                     break
 
         elif option == "2":

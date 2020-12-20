@@ -557,7 +557,7 @@ class CovidTrackerApp():
         plt.ylabel("Number Of Deaths")
         plt.show()
 
-    def main():
+def main():
     """
     Enter COVID reports, read COVID report information from humdata.org, 
     download COVID report file, find the latest number of cases/deaths 

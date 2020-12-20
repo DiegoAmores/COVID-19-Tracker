@@ -286,3 +286,27 @@ class CovidTrackerApp():
                 click.clear()
                 
             return False
+        
+    def get_latest_report(self):
+        """
+           Gets the latest report date from the COVID set of objects.
+        
+        Attributes:
+            sorted_report (list): Sorted COVID report objects from self.info.
+            report_date (str): The latest report date.
+            
+        Side Effects:
+            Modifies 
+            
+        Returns:
+            report_date (str): The latest report date.
+        """
+        sorted_report = sorted(self.info, key=lambda x: (x.get_date(), x.get_state()))
+        report_date = ""
+        
+        if self.report_add == False:
+            report_date = sorted_report[-1].get_date()
+        else:
+            report_date = sorted_report[self.report_counter].get_date()
+    
+        return report_date

@@ -5,7 +5,7 @@ from unittest import mock
 
 covid_report = CovidTrackerApp()
 
-def test_columns(capsys):
+def test_happy_cases_death_rate(capsys):
     with mock.patch("builtins.input",
                     side_effect = ["2020-12-16"]):
         assert covid_report.latest_highest_deaths_rates() == [4.391238291617682, 4.317442197883367,
@@ -21,6 +21,20 @@ def test_columns(capsys):
         assert covid_report.latest_highest_deaths_rates() == [4.430611680805852, 4.345436950802612,
          3.837872283337805, 3.5159717487231608, 2.841469671257745, 2.53235687317281, 2.510635736462858,
           2.405294663252466, 2.319694489907256, 2.1719358849199395]
+
+def test_edge_cases_death_rate(capsys):
+    with mock.patch("builtins.input",
+                    side_effect = ["2020-06-30"]):
+        assert covid_report.latest_highest_deaths_rates() == [9.29182611686804, 8.746647847565278, 8.664657303726926, 
+                                                              7.981072079810721, 7.396998585624805, 7.338916536952185, 
+                                                              6.666666666666667, 6.666666666666667, 6.416464891041162, 5.65038957949206]
+    with mock.patch("builtins.input",
+                    side_effect = ["2020-07-01"]):
+        assert covid_report.latest_highest_deaths_rates() == [9.284548655844715, 8.701019935745451, 
+                                                              8.67638765810038, 7.972264713995536, 7.4040479004608635, 
+                                                              7.297744491857529, 6.666666666666667, 6.521739130434782, 
+                                                              6.428817649086521, 5.67258054945707]
+    
 
 def test_recent_most_case_area(capsys):
     with mock.patch("builtins.input", side_effect=["2020-12-15"]):

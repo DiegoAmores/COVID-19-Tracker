@@ -421,3 +421,45 @@ class CovidTrackerApp():
         death_rates_list = top_ten["Death Rate"].tolist()
         
         return death_rates_list
+    
+    def recent_most_case_area(self):
+        """
+        Reads data from the csv file that we download, calculate and print 
+        the number of cases reported from date(input) to the recent date by states.
+            
+        Attributes:
+            date (str): Covid report date.
+            state (str): Covid report state.
+            cases (int): Covid report  of number of COVID cases.
+            
+        Side effect:
+            Relies on valid user input for date or else error will occur.
+            Depends on CSV file to have at least 2 Covid cases for a state.
+            prints zero value if there's only one case.
+            prints to stdout.
+            
+        Return:
+            result (list): The list of cases change value.
+        """
+        print("\nShow the Number of Cases reported from the date user put:\n")
+        df = pd.read_csv("Updated_Report.csv", sep = ",")
+        date_entry = input(' type the date in format YYYY-MM-DD : ')
+        input_date = datetime.strftime(datetime.strptime(date_entry, 
+                                                         '%Y-%m-%d'), '%Y-%m-%d')
+        
+        print(str(input_date) + "\t~\t" + str(date.today()-timedelta(days=1)) + "\n")
+        range_cases = (df[df["Date"] >= input_date])
+        
+        max_cases = range_cases.groupby("State")["Cases"].max()
+        min_cases = range_cases.groupby("State")["Cases"].min()
+        
+        change_cases = max_cases - min_cases
+        print(change_cases.sort_values(ascending=False))
+        result = change_cases.sort_values(ascending=False).tolist()
+        
+        
+    
+        click.pause()
+        click.clear()
+        return result 
+    

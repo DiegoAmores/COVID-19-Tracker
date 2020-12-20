@@ -556,3 +556,90 @@ class CovidTrackerApp():
         plt.xlabel("Name Of The States")
         plt.ylabel("Number Of Deaths")
         plt.show()
+
+    def main():
+    """
+    Enter COVID reports, read COVID report information from humdata.org, 
+    download COVID report file, find the latest number of cases/deaths 
+    by state, list the top 10 states with highest death rates on a specific date, 
+    prints total  cases/deaths reported from specific date to current date,
+    show data visualization of COVID and exits application.
+        
+    Attributes:
+        open_option (int): Flag for opening download report file 
+                           option if user has Covid data.
+                           
+        option (str): Option user selected for application.
+        
+    Side Effects:
+        Don't kill terminal. Instead exit from option menu in program.
+    """
+
+    while True:
+        click.clear()
+        open_option = 3
+
+        print("US Covid Reporter")
+        print("1. Enter Covid Report")
+        print("2. Read File from https://data.humdata.org")
+        
+        if len(CovidTrackerApp().info) > 0:
+            print(str(open_option) + ". Download Updated Report")
+            print(str(open_option + 1) + ". Find Latest Number of Cases/Deaths By State")
+            open_option = 5
+            
+        if path.exists("Updated_Report.csv") and path.exists("new_data.txt"):
+            print(str(open_option) + 
+                  ". List Top 10 States With Highest Death Rates On Specific Date")
+            print(str(open_option + 1) + 
+                  ". Print Total Cases Reported From Specific Date From Recent Case Report")
+            print(str(open_option + 2) + 
+                  ". Print Total Deaths Reported From Specific Date From Recent Death Report")
+            print(str(open_option + 3) + 
+                  ". Data Visualization")
+            print(str(open_option + 4) + 
+                  ". Exit Application")
+            
+    
+        option = input("Option: ")
+
+        if option == "1":
+            while True:
+                if CovidTrackerApp().get_report() == False:
+                    break
+
+        elif option == "2":
+            CovidTrackerApp().read_file()
+                
+        elif option == "3": 
+            CovidTrackerApp().write_file()
+                
+        elif option == "4":
+            while True:
+                if CovidTrackerApp().find_state() == False:
+                    break
+                    
+        elif option == "5":
+                CovidTrackerApp().latest_highest_deaths_rates()
+                click.pause()
+                
+        elif option == "6":
+            CovidTrackerApp().recent_most_case_area()
+            click.clear()
+                
+        elif option == "7":
+            CovidTrackerApp().recent_most_death_area()
+            click.clear()
+                
+        elif option =="8":
+            CovidTrackerApp().graph()
+            os.remove("Updated_Report.csv")
+            break
+        
+        elif option == "9":
+            os.remove("Updated_Report.csv")
+            sys.exit()
+
+if __name__ == "__main__":
+    main()
+    sys.exit()

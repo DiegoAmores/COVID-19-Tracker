@@ -396,3 +396,28 @@ class CovidTrackerApp():
                 continue
         
         return start_over
+    
+     def latest_highest_deaths_rates(self):
+        """
+        Reads a csv file into a dataframe and groups it by states. 
+        Then finds the total deaths the total cases for each state 
+        for a specific date and sorts by highest to lowest number of deaths. 
+            
+        Returns:
+            The states with the top ten highest deaths on this particular day
+        
+        Side Effect:
+            Depends on whether or not CSV file has at least 10 reports.
+        """
+        date = input("Enter a date to search for highest death rates (YYYY-MM-DD): ")
+        df = pd.read_csv("Updated_Report.csv", 
+                         usecols=["Date", "State", "Cases", "Deaths"])
+        df_2 = df.loc[df["Date"] == date]
+        df_2["Death Rate"] = df_2["Deaths"]/df_2["Cases"]* 100
+        df_2['Death Rate'].round(decimals=2)
+        sorted_death_rate = df_2.sort_values(by=["Death Rate"], ascending=False)
+        top_ten = sorted_death_rate[0:10]
+        print(top_ten.to_string(index=False))
+        death_rates_list = top_ten["Death Rate"].tolist()
+        
+        return death_rates_list

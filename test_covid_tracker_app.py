@@ -45,3 +45,26 @@ def test_recent_most_case_area(capsys):
            105774, 104031, 97417, 95289, 94729, 92476, 91745, 86668, 74823, 70280, 58112, 57180,
             54012, 49809, 47696, 47428, 39329, 30474, 29849, 25240, 24270, 11837, 9293, 5303,
              4162, 3127, 535, 25]
+
+def test_reg_data():
+    state_death = covid_report.reg_data()
+
+    assert len(state_death[0]) == 50
+    assert len(state_death[1]) == 50
+
+    assert len(state_death[0]) != 49
+    assert len(state_death[1]) != 49
+    assert len(state_death[0]) != 51
+    assert len(state_death[1]) != 51
+    assert len(state_death[0]) != 100
+    assert len(state_death[1]) != 100
+
+    assert state_death[0][0] == 'Alabama'
+    assert state_death[0][17] == 'Louisiana'
+    assert state_death[0][25] == 'Montana'
+    assert state_death[0][49] == 'Wyoming'
+
+    assert state_death[1][0] == '4487'
+    assert state_death[1][17] == '5591'
+    assert state_death[1][25] == '707'
+    assert state_death[1][49] == '194'

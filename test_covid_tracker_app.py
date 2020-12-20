@@ -11,11 +11,13 @@ def test_happy_cases_death_rate(capsys):
         assert covid_report.latest_highest_deaths_rates() == [4.391238291617682, 4.317442197883367,
          3.7857762929447043, 3.489647042419556, 2.812280290602297, 2.516104447549402, 2.513333041380505,
           2.4018232455512765, 2.31304169831343, 2.1771731451682865]  
+        
     with mock.patch("builtins.input",
                     side_effect = ["2020-12-17"]):
         assert covid_report.latest_highest_deaths_rates() == [4.350234981273499, 4.292110398397106,
          3.7374655210883208, 3.467789284331239, 2.8068137824235384, 2.511438986157379,
-          2.4931888400800513, 2.4224012028814927, 2.2990463215258856, 2.1777135440762834]  
+          2.4931888400800513, 2.4224012028814927, 2.2990463215258856, 2.1777135440762834] 
+         
     with mock.patch("builtins.input",
                     side_effect = ["2020-12-15"]):
         assert covid_report.latest_highest_deaths_rates() == [4.430611680805852, 4.345436950802612,
@@ -36,7 +38,6 @@ def test_edge_cases_death_rate(capsys):
           7.297744491857529, 6.666666666666667, 6.521739130434782, 
            6.428817649086521, 5.67258054945707]
     
-
 def test_recent_most_case_area(capsys):
     with mock.patch("builtins.input", side_effect=["2020-12-15"]):
         assert covid_report.recent_most_case_area() == [105999, 39190, 24689, 20222, 19876,

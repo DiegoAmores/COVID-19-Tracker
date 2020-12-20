@@ -462,4 +462,38 @@ class CovidTrackerApp():
         click.pause()
         click.clear()
         return result 
+        
+    def recent_most_death_area(self):
+        """
+        Read data from the csv file that we download, calculate and print 
+        the Number of death reported from date(input) to the recent date by states
+        
+        Attributes:
+            date (str): Covid report date.
+            state (str): Covid report state.
+            deaths (int): Covid report of number of COVID deaths.
+            
+        Side effect:
+            Relies on valid user input for date or else error will occur.
+            Depends on CSV file to have at least 2 Covid cases for a state.
+            prints zero value if there's only one case.
+            Prints to stdout.
+        """
+        print("\nShow the Number of Deaths reported from the date user put:\n")
+        df = pd.read_csv("Updated_Report.csv", sep = ",")
+        date_entry = input(' type the date in format YYYY-MM-DD : ')
+        input_date = datetime.strftime(datetime.strptime(date_entry,
+                                                         '%Y-%m-%d'), '%Y-%m-%d')
+
+        print(str(input_date) + "\t~\t" + str(date.today()-timedelta(days=1)) + "\n")
+        range_death = (df[df["Date"] > input_date])
+        
+        max_deaths = range_death.groupby("State")["Deaths"].max()
+        min_deaths = range_death.groupby("State")["Deaths"].min()
+        
+        change_deaths = max_deaths - min_deaths
+        print(change_deaths.sort_values(ascending=False))
+        
+        click.pause()
+        click.clear()
     

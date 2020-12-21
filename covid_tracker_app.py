@@ -350,7 +350,7 @@ class CovidTrackerApp():
                     continue
             
             latest_report = self.get_latest_report()
-            latest_date = ""
+            no_info = True
             
             for i in sorted(self.info, key=lambda x: (x.get_date(), x.get_state()), 
                                                                                     reverse=True):
@@ -363,10 +363,9 @@ class CovidTrackerApp():
                         print("State FIPS Code: " + str(fips))
                         print("Total Covid Cases: " + str(i.get_cases()))
                         print("Total Covid Deaths: " + str(i.get_deaths()))
-                    else:
-                        latest_date = False
+                        no_info = False
                         
-            if latest_date == False:
+            if no_info == True:
                 print("No Latest Information Provided.")
                     
             while True:

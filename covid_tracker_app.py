@@ -288,7 +288,7 @@ class CovidTrackerApp():
         
     def get_latest_report(self):
         """
-           Gets the latest report date from the COVID set of objects.
+        Gets the latest report date from the COVID set of objects.
         
         Attributes:
             sorted_report (list): Sorted COVID report objects from self.info.
@@ -330,71 +330,71 @@ class CovidTrackerApp():
         Returns: 
             The most recent number of deaths and cases for the inputted state
         """
-        valid_input_flag = 0
-        
-        while True:
+        if (len(self.info) > 0):
             while True:
                 try:
                     state = input("Enter State to Find Lastest Information For: ")
+                    valid_state = ""
                     for key in self.state_fips_dict:
-                        if key == state:
-                            valid_input_flag = 1
-                        
-                    if valid_input_flag == 1:
-                        break
-                    else:
-                        raise ValueError() 
-                      
+                        if state == key:
+                            valid_state = key 
+                            
                 except ValueError:
                     click.clear()
-                    print("Invalid input! Please try again...")
-                    
-            latest_report = self.get_latest_report()
+                    print("Please enter a state.")
+                
+                if valid_state == state:
+                    break
+                else:
+                    print("Please enter a state.")
+                    continue
             
-            for i in sorted(self.info, key=lambda x: (x.get_date(), x.get_state()),
-                            reverse=True):
+            latest_report = self.get_latest_report()
+            latest_date = ""
+            
+            for i in sorted(self.info, key=lambda x: (x.get_date(), x.get_state()), 
+                                                                                    reverse=True):
                 if i.get_date() == latest_report:
-                    if i.get_state() == state:
-                        click.clear()
+                    if state == i.get_state():
                         fips = self.state_fips_dict.get(state)
-                        
                         print("Latest Information For: " + state + "\n")
                         print("Lastest Report As of: " + i.get_date())
                         print("State: " + i.get_state())        
                         print("State FIPS Code: " + str(fips))
                         print("Total Covid Cases: " + str(i.get_cases()))
                         print("Total Covid Deaths: " + str(i.get_deaths()))
-                        break
+                    else:
+                        latest_date = False
                         
-                else:
-                    click.clear()
-                    print("\nNo Latest Information Provided...")
-                    break
-                
-            while True:
-                    try:
-                        start_over = input("\nWould You Like To Search Another State(Y/N): ")
-                        if start_over == 'N':
-                            break
-                        elif start_over == 'Y':
-                            click.clear()
-                            break
-                        else:
-                            raise ValueError()
+            if latest_date == False:
+                print("No Latest Information Provided.")
                     
-                    except ValueError:
-                        click.clear()
-                        print("Input Invalid. Please try again...")
-        
+            while True:
+                try:
+                    start_over = input("\nWould You Like To Search Another State(Y/N): ")
+                    
+                except ValueError:
+                    print("Please enter (Y/N).")
+                
+                if start_over == "Y" or start_over == "N":
+                    break
+                else:
+                    print("Please enter (Y/N).")
+                    continue
+            
             if start_over == 'N':
                 start_over = False
+            
+            elif start_over == 'Y':
+                start_over = True
                 click.clear()
-                break
-            else:
-                valid_input_flag = 0
-                continue
+                
+            return start_over
         
-        return start_over
+        else:
+            print("No data in the system.")
+            click.pause()
+            return False
     
     def latest_highest_deaths_rates(self):
         """

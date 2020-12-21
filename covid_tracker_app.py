@@ -26,7 +26,7 @@ class CovidTrackerApp():
     CovidTrackerApp class has 10 different functions, and all functions have
     different purposes.
     
-    get_report()
+    add_report()
         This function will ask users to input data for a new COVID report.
         
     read_file()
@@ -97,15 +97,15 @@ class CovidTrackerApp():
             "West Virginia": 54, "Wisconsin": 55, "Wyoming": 56,
         }
     
-    def get_report(self):
+    def add_report(self):
         """
         Prompts users to enter a new COVID report for any state for today's date
         with new COVID cases and new COVID deaths information.
         
         Attributes:
-            valid_input_flag (int): Flag for input valdidation.
             today (str): Today's date.
             state (str): User's input state.
+            valid_state (str): For validating if user input is a state.
             fips (str): state's FIPS code.
             cases (int): Number of COVID cases.
             deaths (int): Number of COVID deaths.
@@ -124,90 +124,84 @@ class CovidTrackerApp():
             ValueError: handles invalid input.
         
         Returns:
-            start_over (bool): 
-            
-        Few Exception Bugs to fix.
+            start_over (bool): Boolean expression to repeat process again.
         """
-        valid_input_flag = 0
+        today = date.today().strftime("%Y-%m-%d")
+        print("Date: " + today)
+        
         while True:
+            try:
+                state = input("Enter State(ex. Maryland): ")
+                valid_state = ""
+                for key in self.state_fips_dict:
+                    if state == key:
+                        valid_state = key             
+            except ValueError:
+                print("Please enter a state.")
+                continue
             
-            today = date.today().strftime("%Y-%m-%d")
-            print("Date: " + today)
-
-            while True:
-                try:
-                    state = input("Enter State(ex. Maryland): ")
-                    
-                    for key in self.state_fips_dict:
-                        if key == state:
-                            valid_input_flag = 1
-                        
-                    if valid_input_flag == 1:
-                        break
-                    else:
-                        raise ValueError() 
-                      
-                except ValueError:
-                    click.clear()
-                    print("Invalid input! Please try again...")
-                            
-            fips = self.state_fips_dict.get(state)          
-            print("State FIPS Code: " + str(fips))
+            if valid_state == state:
+                break
             
-            while True:
-                try:
-                    cases = int(input("Enter cases reported: "))
-                    if cases < 0:
-                        raise ValueError()
-                    
-                    while True:
-                        try:
-                            deaths = int(input("Enter deaths reported: "))
-                            if deaths < 0:
-                                raise ValueError()
-                            break
-                        
-                        except ValueError:
-                            click.clear()
-                            print("Input only positive integers! Please try again...")
-                    break
+            else:
+                print("Please enter a state.")
+                continue
+             
+        fips = self.state_fips_dict.get(state)          
+        print("State FIPS Code: " + str(fips))
+        
+        while True:
+            try:
+                cases = int(input("Enter cases reported: "))
+            except ValueError:
+                print("Please enter an integer.")
+                continue
+            if cases < 0:
+                print("Please enter a positive integer.")
+                continue
+            else:
+                break
+        
+        while True:
+            try:
+                deaths = int(input("Enter deaths reported: "))
+            except ValueError:
+                print("Please enter an integer.")
+                continue
+            if deaths < 0:
+                print("Please enter a positive integer.")
+                continue
+            else:
+                break
+        
+        while True:
+            try:
+                start_over = input("Would You Like To Add Another Report(Y/N): ")
                 
-                except ValueError:
-                    click.clear()
-                    print("Input only positive integers! Please try again...")
-                      
-            while True:
-                try:
-                    start_over = input("Would You Like To Add Another Report(Y/N): ")
-                    if start_over == 'N':
-                        break
-                    elif start_over == 'Y':
-                        click.clear()
-                        break
-                    else:
-                        raise ValueError()
-                    
-                except ValueError:
-                    click.clear()
-                    print("Input Invalid. Please try again...")
-            
-            if CovidInfo(today, state, fips, cases, deaths) not in self.info:
-                info_obj = CovidInfo(today, state, fips, cases, deaths)
-                self.info.add(info_obj)
+            except ValueError:
+                print("Please enter (Y/N).")
                 
-                self.report_counter = self.report_counter - 1
-                
-            self.report_add = True
-            
-            if start_over == 'N':
-                start_over = False
-                click.clear()
+            if start_over == "Y" or start_over == "N":
                 break
             else:
-                valid_input_flag = 0
+                print("Please enter (Y/N).")
                 continue
-
-        return info_obj
+        
+        if CovidInfo(today, state, fips, cases, deaths) not in self.info:
+            info_obj = CovidInfo(today, state, fips, cases, deaths)
+            self.info.add(info_obj)
+            self.report_counter = self.report_counter - 1
+             
+        self.report_add = True
+            
+        if start_over == 'N':
+            start_over = False
+            
+        elif start_over == 'Y':
+            start_over = True
+            click.clear()
+        
+        return start_over
     
     def read_file(self):
         """ 
@@ -610,7 +604,7 @@ def main():
 
         if option == "1":
             while True:
-                if CovidTrackerApp().get_report().get_date() == str(date.today()):
+                if CovidTrackerApp().add_report() == False:
                     break
 
         elif option == "2":

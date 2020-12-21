@@ -1,12 +1,68 @@
-from covid_tracker_app import CovidTrackerApp
-import pandas as pd 
 import builtins
+import pandas as pd 
+
 from datetime import date
+from covid_tracker_app import CovidTrackerApp
 from unittest import mock
 
 covid_report = CovidTrackerApp()
 
-
+def test_happy_cases_add_report(capsys):
+    #Testing valid input by the user.
+    
+    with mock.patch("builtins.input",
+                   side_effect = ["Maryland", "6", "7", "N"]):
+        assert covid_report.add_report() == False
+        captured = capsys.readouterr()
+        assert captured.out == (
+            "Date: " + str(date.today()) + "\n"
+            "State FIPS Code: 24\n"
+        )
+        
+    with mock.patch("builtins.input",
+                   side_effect = ["Ohio", "13", "2", "Y"]):
+        assert covid_report.add_report() == True
+        captured = capsys.readouterr()
+        assert captured.out == (
+            "Date: " + str(date.today()) + "\n"
+            "State FIPS Code: 39\n"
+        )
+        
+def test_edge_cases_add_report(capsys):
+    #Testing invalid input by the user.
+    
+    with mock.patch("builtins.input",
+                    side_effect = ["United States", "Maryland", "-6", "6", 
+                                   "seven", "7", "Yes", "Y"]):
+        assert covid_report.add_report() == True
+        captured = capsys.readouterr()
+        assert captured.out == (
+            "Date: " + str(date.today()) + "\n"
+            "Please enter a state.\n"
+            "State FIPS Code: 24\n"
+            "Please enter a positive integer.\n"
+            "Please enter an integer.\n"
+            "Please enter (Y/N).\n"
+        )
+        
+    with mock.patch("builtins.input",
+                    side_effect = ["Japan", "ohio", "Ohio", "-6", "six", 
+                                   "6", "seven", "-7", "7", "No", "n", "N"]):
+        assert covid_report.add_report() == False
+        captured = capsys.readouterr()
+        assert captured.out == (
+            "Date: " + str(date.today()) + "\n"
+            "Please enter a state.\n"
+            "Please enter a state.\n"
+            "State FIPS Code: 39\n"
+            "Please enter a positive integer.\n"
+            "Please enter an integer.\n"
+            "Please enter an integer.\n"
+            "Please enter a positive integer.\n"
+            "Please enter (Y/N).\n"
+            "Please enter (Y/N).\n"
+        )
+        
 def test_happy_cases_get_report(capsys):
     with mock.patch("builtins.input",
                    side_effect = ["Maryland", "6", "7", "N"]):
@@ -69,7 +125,8 @@ def test_recent_most_case_area(capsys):
           195064, 193490, 162032, 149968, 144355, 142578, 135721, 133271, 125989, 121643, 115264,
            105774, 104031, 97417, 95289, 94729, 92476, 91745, 86668, 74823, 70280, 58112, 57180,
             54012, 49809, 47696, 47428, 39329, 30474, 29849, 25240, 24270, 11837, 9293, 5303,
-             4162, 3127, 535, 25] 
+             4162, 3127, 535, 25]
+         
 def test_edge_most_recent_case_area(capsys):
     with mock.patch("builtins.input", side_effect =["2020-12-17"]):
         assert covid_report.recent_most_case_area() == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 

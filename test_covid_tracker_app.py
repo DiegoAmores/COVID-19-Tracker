@@ -62,11 +62,6 @@ def test_edge_cases_add_report(capsys):
             "Please enter (Y/N).\n"
             "Please enter (Y/N).\n"
         )
-        
-def test_happy_cases_get_report(capsys):
-    with mock.patch("builtins.input",
-                   side_effect = ["Maryland", "6", "7", "N"]):
-        assert covid_report.get_report().get_date() == str(date.today())
 
 def test_happy_cases_death_rate(capsys):
     with mock.patch("builtins.input",

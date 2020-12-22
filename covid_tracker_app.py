@@ -1,14 +1,15 @@
-# Programmers Kristen Wagner, Chandra Tamang, Minsung Kim, and Diego Amores
+# Programmers: Kristen Wagner, Chandra Tamang, Minsung Kim, and Diego Amores
 import click
 import csv
-import pandas as pd
-import os.path
-from os import path
-import sys
 import matplotlib.pyplot as plt
+import pandas as pd
+import os
 import re
-from covid_information import CovidInfo
+import sys
+
 from datetime import date, datetime, timedelta
+from covid_information import CovidInfo
+from os import path
 
 #FOR MAC USERS ONLY
 #import ssl 

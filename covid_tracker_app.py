@@ -196,6 +196,7 @@ class CovidTrackerApp():
             
         if start_over == 'N':
             start_over = False
+            click.clear()
             
         elif start_over == 'Y':
             start_over = True
@@ -225,10 +226,11 @@ class CovidTrackerApp():
         """
         while True:
             
-            #Reads data from CSV and stores it has a data frame.        
+            #Reads data from The New York Times API and stores it as a data frame.        
             patient_data = pd.read_csv(
-                "https://data.humdata.org/hxlproxy/api/data-preview.csv?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnytimes%2Fcovid-19-data%2Fmaster%2Fus-states.csv&filename=us-states.csv",
-                usecols = ["date", "state", "fips", "cases", "deaths"])
+                "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv",
+                usecols = ["date", "state", "fips", "cases", "deaths"]
+                )
             
             with click.progressbar(range(len(patient_data)), 
                                    label = "Importing Data:") as bar:
@@ -247,10 +249,30 @@ class CovidTrackerApp():
                         #Create object for COVID report and add it to the set.
                         info_obj = CovidInfo(date, state, fips, cases, deaths)
                         self.info.add(info_obj)
-                        
-                print("Importing Complete!")
-                click.pause()
-                click.clear()
+            
+            live_patient_data = pd.read_csv(
+                "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-states.csv",
+                usecols = ["date", "state", "fips", "cases", "deaths"]
+            )
+            
+            #Iterate through LIVE CSV and extract date, state, fips code, cases, and deaths.
+            for i in range(len(live_patient_data)):
+                date = patient_data.values[i][0]
+                state = patient_data.values[i][1]
+                fips = patient_data.values[i][2]
+                cases = patient_data.values[i][3]
+                deaths = patient_data.values[i][4]
+                    
+                #Checks to see if there's no duplicates already in the set of objects.
+                if CovidInfo(date, state, fips, cases, deaths) not in self.info:
+                     
+                    #Create object for COVID report and add it to the set.
+                    info_obj = CovidInfo(date, state, fips, cases, deaths)
+                    self.info.add(info_obj)
+                      
+            print("Importing Complete!")
+            click.pause()
+            click.clear()
             
             return False
         
@@ -276,11 +298,12 @@ class CovidTrackerApp():
                     writer.writerow(["Date", "State", "Fips", "Cases", "Deaths"])
                     
                     #Writes to CSV in descending order by date and state
-                    for i in sorted(bar, key=lambda x: (x.get_date(), x.get_state()), reverse=True):
+                    for i in sorted(bar, key=lambda x: (x.get_date(), x.get_state())):
                         writer.writerow([i.get_date(), i.get_state(), i.get_fips(), 
                                         i.get_cases(), i.get_deaths()])
                         
                 print("Download Complete!")
+                
                 click.pause()
                 click.clear()
                 
@@ -320,6 +343,7 @@ class CovidTrackerApp():
             valid_input_flag (int): Validates whether user input valid input
             state (str): The state the user wants to find latest information for.
             latest_report (str): The date of the latest COVID report.
+            no_info (bool): Validates whether there's live data
             
             start_over (str): Whether or not the user wants to search for 
                               latest information for another state.
@@ -328,7 +352,8 @@ class CovidTrackerApp():
             Depends on self.info with having more than 1 COVID case.
          
         Returns: 
-            The most recent number of deaths and cases for the inputted state
+            start_over (bool): Boolean expression to repeat process again.
+            False: If there's no data in application.
         """
         if (len(self.info) > 0):
             while True:
@@ -383,6 +408,7 @@ class CovidTrackerApp():
             
             if start_over == 'N':
                 start_over = False
+                click.clear()
             
             elif start_over == 'Y':
                 start_over = True
@@ -417,6 +443,9 @@ class CovidTrackerApp():
         top_ten = sorted_death_rate[0:10]
         print(top_ten.to_string(index=False))
         death_rates_list = top_ten["Death Rate"].tolist()
+        
+        click.pause()
+        click.clear()
         
         return death_rates_list
     
@@ -574,12 +603,11 @@ def main():
     """
 
     while True:
-        click.clear()
-        open_option = 3
-
         print("US Covid Reporter")
         print("1. Enter Covid Report")
         print("2. Read File from https://data.humdata.org")
+        
+        open_option = 3
         
         if len(CovidTrackerApp().info) > 0:
             print(str(open_option) + ". Download Updated Report")
@@ -597,7 +625,6 @@ def main():
                   ". Data Visualization")
             print(str(open_option + 4) + 
                   ". Exit Application")
-            
     
         option = input("Option: ")
 
@@ -618,26 +645,22 @@ def main():
                     break
                     
         elif option == "5":
-                CovidTrackerApp().latest_highest_deaths_rates()
-                click.pause()
+            CovidTrackerApp().latest_highest_deaths_rates()
                 
         elif option == "6":
             CovidTrackerApp().recent_most_case_area()
-            click.clear()
                 
         elif option == "7":
             CovidTrackerApp().recent_most_death_area()
-            click.clear()
                 
         elif option =="8":
             CovidTrackerApp().graph()
-            os.remove("Updated_Report.csv")
-            break
-        
+            
         elif option == "9":
             os.remove("Updated_Report.csv")
             sys.exit()
 
+        click.clear()
+                 
 if __name__ == "__main__":
     main()
-    sys.exit()

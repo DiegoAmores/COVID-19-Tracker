@@ -9,6 +9,7 @@ import sys
 
 from datetime import date, datetime, timedelta
 from covid_information import CovidInfo
+from live_covid_information import LiveCovidInfo
 from os import path
 
 #FOR MAC USERS ONLY
@@ -77,6 +78,7 @@ class CovidTrackerApp():
         Prints to stdout.
     """
     info = set()
+    live_info = set()
     report_add = False
     report_counter = 0
     
@@ -225,39 +227,22 @@ class CovidTrackerApp():
         Returns:
             False: Boolean expression to break while loop
         """
-        while True:
-            
-            #Reads data from The New York Times API and stores it as a data frame.        
-            patient_data = pd.read_csv(
-                "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv",
-                usecols = ["date", "state", "fips", "cases", "deaths"]
-                )
-            
-            with click.progressbar(range(len(patient_data)), 
-                                   label = "Importing Data:") as bar:
-                
-                #Iterate through CSV and extract date, state, fips code, cases, and deaths.
-                for i in bar:
-                    date = patient_data.values[i][0]
-                    state = patient_data.values[i][1]
-                    fips = patient_data.values[i][2]
-                    cases = patient_data.values[i][3]
-                    deaths = patient_data.values[i][4]
-                    
-                    #Checks to see if there's no duplicates already in the set of objects.
-                    if CovidInfo(date, state, fips, cases, deaths) not in self.info:
-                        
-                        #Create object for COVID report and add it to the set.
-                        info_obj = CovidInfo(date, state, fips, cases, deaths)
-                        self.info.add(info_obj)
-            
-            live_patient_data = pd.read_csv(
-                "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-states.csv",
-                usecols = ["date", "state", "fips", "cases", "deaths"]
+        #Reads data from The New York Times API and stores it as a data frame.        
+        patient_data = pd.read_csv(
+            "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv",
+            usecols = ["date", "state", "fips", "cases", "deaths"]
             )
+        
+        live_patient_data = pd.read_csv(
+            "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-states.csv",
+            usecols = ["date", "state", "fips", "cases", "deaths"]
+        )
             
-            #Iterate through LIVE CSV and extract date, state, fips code, cases, and deaths.
-            for i in range(len(live_patient_data)):
+        with click.progressbar(range(len(patient_data)), 
+                                label = "Importing Data:") as bar:
+                
+            #Iterate through CSV and extract date, state, fips code, cases, and deaths.
+            for i in bar:
                 date = patient_data.values[i][0]
                 state = patient_data.values[i][1]
                 fips = patient_data.values[i][2]
@@ -266,16 +251,29 @@ class CovidTrackerApp():
                     
                 #Checks to see if there's no duplicates already in the set of objects.
                 if CovidInfo(date, state, fips, cases, deaths) not in self.info:
-                     
+                        
                     #Create object for COVID report and add it to the set.
                     info_obj = CovidInfo(date, state, fips, cases, deaths)
                     self.info.add(info_obj)
-                      
-            print("Importing Complete!")
-            click.pause()
-            click.clear()
             
-            return False
+        #Iterate through LIVE CSV and extract date, state, fips code, cases, and deaths.
+        for i in range(len(live_patient_data)):
+            date = live_patient_data.values[i][0]
+            state = live_patient_data.values[i][1]
+            fips = live_patient_data.values[i][2]
+            cases = live_patient_data.values[i][3]
+            deaths = live_patient_data.values[i][4]
+            
+            if LiveCovidInfo(date, state, fips, cases, deaths) not in self.live_info:
+                #Create object for COVID report and add it to the set.
+                live_info_obj = LiveCovidInfo(date, state, fips, cases, deaths)
+                self.live_info.add(live_info_obj)
+                
+        self.info.update(self.live_info)
+        
+        print("Importing Complete!")
+        click.pause()
+        click.clear()
         
     def write_file(self):
         """
@@ -287,28 +285,37 @@ class CovidTrackerApp():
             
         Returns:
             False: boolean expression to break while loop.  
-        """
-        while True:   
-            with click.progressbar(self.info, label = "Downloading File:", 
-                                   length = len(self.info)) as bar:
-                filename = "Updated_Report.csv"
+        """   
+        with click.progressbar(self.info, label = "Downloading CSV File:", 
+                                length = len(self.info)) as bar:
+            filename = "Updated_Report.csv"
                 
-                #Creates new CSV file with columns named "Date, State, Fips, Cases, Deaths"
-                with open(filename, 'w') as csv_file:
-                    writer = csv.writer(csv_file, delimiter = ',', lineterminator = '\n')
-                    writer.writerow(["Date", "State", "Fips", "Cases", "Deaths"])
+            #Creates new CSV file with columns named "Date, State, Fips, Cases, Deaths"
+            with open(filename, 'w') as csv_file:
+                writer = csv.writer(csv_file, delimiter = ',', lineterminator = '\n')
+                writer.writerow(["Date", "State", "Fips", "Cases", "Deaths"])
                     
-                    #Writes to CSV in descending order by date and state
-                    for i in sorted(bar, key=lambda x: (x.get_date(), x.get_state())):
-                        writer.writerow([i.get_date(), i.get_state(), i.get_fips(), 
-                                        i.get_cases(), i.get_deaths()])
-                        
-                print("Download Complete!")
+                #Writes to CSV in descending order by date and state
+                for i in sorted(bar, key=lambda x: (x.get_date(), x.get_state())):
+                    writer.writerow([i.get_date(), i.get_state(), i.get_fips(), 
+                                    i.get_cases(), i.get_deaths()])
+        
+        with click.progressbar(self.live_info, label = "Downloading TXT File:",
+                              length = len(self.live_info)) as bar:
+            filename = "Latest Highest COVID Cases.txt"
+            
+            with open (filename, "w") as txt_file:
+                writer = csv.writer(txt_file, delimiter = ',', lineterminator = '\n')
+                writer.writerow(["Date As of: " + self.get_latest_report()])
+                writer.writerow(["State", "Cases"])
                 
-                click.pause()
-                click.clear()
+                for i in sorted(bar, key=lambda x: (x.get_date(), x.get_state())):
+                    writer.writerow([i.get_state(), i.get_cases()])
+                     
+        print("Download Complete!")
                 
-            return False
+        click.pause()
+        click.clear()
         
     def get_latest_report(self):
         """
@@ -527,32 +534,26 @@ class CovidTrackerApp():
     
     def reg_data(self):
         """ 
-        This function will find name of the states and number of deaths using
-        regular expression, then append the data into two list called 
-        states and death
+        This function will find name of the states and number of cases using
+        live data, then append the data into two list called 
+        states and cases.
         
         Attributes:
-            fh (IO): Opens file to read.
-            filename (list): Stores lines in file as a list.
             state (list): The name of states.
-            deaths (list): The number of deaths.
+            cases (list): The number of live cases.
             
         Returns:
-            tuple - states and deaths
+            tuple - states and cases.
         """
-        fh = open('new_data.txt', 'r')
-        filename = fh.readlines()
-
         states = []
-        deaths = []
-
-        for line in filename:
-            matches = re.search(r"(\w.+)(\s\d+)", line)
-            states.append(matches.group(1))
-            deaths.append(matches.group(2).strip())
+        cases = []
+        
+        for i in sorted(self.live_info, key=lambda x: (x.get_date(), x.get_state())):
+            states.append(i.get_state())
+            cases.append(i.get_cases())
             
-        return states, deaths
-
+        return (states, cases)
+            
     def graph(self):
         """ 
         This function call reg_data() function and retrieve data - list of states
@@ -580,9 +581,9 @@ class CovidTrackerApp():
         
         plt.figure(figsize=(15,8))
         plt.bar(x_values[:10], y_values[:10])
-        plt.title("States With Highest Number Of Deaths")
-        plt.xlabel("Name Of The States")
-        plt.ylabel("Number Of Deaths")
+        plt.title("States With Highest Number of Cases")
+        plt.xlabel("States")
+        plt.ylabel("COVID-19 Cases in Millions")
         plt.show()
 
 def main():
@@ -615,7 +616,7 @@ def main():
             print(str(open_option + 1) + ". Find Latest Number of Cases/Deaths By State")
             open_option = 5
             
-        if path.exists("Updated_Report.csv") and path.exists("new_data.txt"):
+        if path.exists("Updated_Report.csv"):
             print(str(open_option) + 
                   ". List Top 10 States With Highest Death Rates On Specific Date")
             print(str(open_option + 1) + 

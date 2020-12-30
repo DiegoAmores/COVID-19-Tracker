@@ -1,0 +1,57 @@
+Date As of: 2020-12-29
+State,Cases
+Alabama,351804
+Alaska,45856
+Arizona,510548
+Arkansas,216528
+California,2210853
+Colorado,328249
+Connecticut,181200
+Delaware,56189
+District of Columbia,28535
+Florida,1280169
+Georgia,614716
+Guam,8250
+Hawaii,21109
+Idaho,137449
+Illinois,949947
+Indiana,503242
+Iowa,276946
+Kansas,219147
+Kentucky,261505
+Louisiana,304485
+Maine,22909
+Maryland,271228
+Massachusetts,356934
+Michigan,519327
+Minnesota,411169
+Mississippi,210032
+Missouri,409589
+Montana,80516
+Nebraska,163197
+Nevada,218699
+New Hampshire,41670
+New Jersey,465910
+New Mexico,138659
+New York,938710
+North Carolina,521990
+North Dakota,91836
+Northern Mariana Islands,122
+Ohio,675044
+Oklahoma,283781
+Oregon,110370
+Pennsylvania,628083
+Puerto Rico,109405
+Rhode Island,86789
+South Carolina,298050
+South Dakota,97658
+Tennessee,552794
+Texas,1714134
+Utah,266590
+Vermont,7202
+Virgin Islands,1979
+Virginia,340297
+Washington,243671
+West Virginia,82773
+Wisconsin,510137
+Wyoming,43704

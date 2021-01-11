@@ -28,3 +28,6 @@ If you are using a Mac, uncomment the following from covid_tracker_app.py:
 - import ssl
 - ssl._create_default_https_context = ssl._create_unverified_context
 
+## Command-line Interface:
+![command-line interface preview](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/command-line-interface.PNG)
+

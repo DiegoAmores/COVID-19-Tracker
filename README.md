@@ -37,6 +37,6 @@ Initial Run of Script.
 After Reading Data from API.
 
 ![command-line interface all options]() <br>
-All Available Options.
+After Downloading Updated Report.
 
 

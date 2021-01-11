@@ -12,7 +12,7 @@ All the following scripts must be in the same directory:
 - covid_tracker_app.py
 - covid_information.py
 - live_covid_information.py
-- Delete Update_Report.csv
+- Delete Update_Report.csv (Don't worry you can download a new updated one)
 
 Install the following modules with the following commands:
 For Windows, use python or else for Mac, use python3

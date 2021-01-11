@@ -36,7 +36,7 @@ Initial Run of Script.
 ![command-line interface after](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/command-line%20interface%20after.PNG) <br>
 After Reading Data from API.
 
-![command-line interface all options]() <br>
+![command-line interface all options](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/command-line%20interface%20after%20download.PNG) <br>
 After Downloading Updated Report.
 
 

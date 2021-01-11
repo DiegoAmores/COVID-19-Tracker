@@ -47,5 +47,5 @@ After Downloading Updated Report.
 - The New York Times. (2020). Coronavirus (Covid-19) Data in the United States. Retrieved December 29, 2020, from https://github.com/nytimes/covid-19-data.
 - Click Documentation (7.x): https://click.palletsprojects.com/en/7.x/
 - Matplotlib 3.3.3 Documentation: https://matplotlib.org/Matplotlib.pdf
-- pandas 1.2.0 Documentation: https://pandas.pydata.org/docs/pandas.pdf
+- Pandas 1.2.0 Documentation: https://pandas.pydata.org/docs/pandas.pdf
 

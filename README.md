@@ -21,7 +21,7 @@ For Windows, use python or else for Mac, use python3
 - python -m pip install -U pandas
 - python -m pip install -U pytest
 
-Run the command-line with the following command:
+Run the Python script with the following command:
 python or python3 covid_tracker_app.py
 
 If you are using a Mac, uncomment the following from covid_tracker_app.py:

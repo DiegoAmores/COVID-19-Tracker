@@ -42,7 +42,7 @@ After Reading Data from API.
 ![command-line interface all options](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/images/command-line%20interface%20after%20download.PNG) <br>
 After Downloading Updated Report.
 
-## References
+## Reference
 
 - The New York Times. (2020). Coronavirus (Covid-19) Data in the United States. Retrieved December 29, 2020, from https://github.com/nytimes/covid-19-data.
 

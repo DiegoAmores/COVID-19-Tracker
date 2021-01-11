@@ -33,6 +33,9 @@ If you are using a Mac, uncomment the following from covid_tracker_app.py:
 ![command-line interface preview](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/images/command-line%20interface%20preview.PNG) <br>
 Initial Run of Script.
 
+![command-line interface reading data](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/images/command-line%20reading%20data.PNG) <br>
+Reading Data from API.
+
 ![command-line interface after](https://github.com/DiegoAmores/COVID-19-Tracker/blob/main/images/command-line%20interface%20after.PNG) <br>
 After Reading Data from API.
 

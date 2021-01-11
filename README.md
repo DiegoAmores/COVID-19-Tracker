@@ -41,5 +41,5 @@ After Downloading Updated Report.
 
 ## References
 
-
+-The New York Times. (2020). Coronavirus (Covid-19) Data in the United States. Retrieved [Insert Date Here], from https://github.com/nytimes/covid-19-data.
 

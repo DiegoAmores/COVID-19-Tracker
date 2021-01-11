@@ -609,7 +609,7 @@ def main():
         click.clear()
         print("US Covid Reporter")
         print("1. Enter Covid Report")
-        print("2. Read Data from https://data.humdata.org")
+        print("2. Read Data from https://github.com/nytimes/covid-19-data")
         
         open_option = 3
         
